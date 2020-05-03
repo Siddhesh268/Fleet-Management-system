@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Vehicle</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" a href="R:\miniproject\css\bootstrap.css">
+  <!-- styles -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <style>
+    .profile-sidebar {
+      padding: 20px 20px 20px 20px;
+      background: #fff;
+      margin: 10px 10px 10px 10px
+    }
+
+    .profile-usertitle {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .profile-usertitle-name {
+      color: #5a7391;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+
+    .profile-usertitle-job {
+      text-transform: uppercase;
+      color: #5b9bd1;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    body {
+      font-size: 21px;
+      background: #F1F3FA;
+
+    }
+
+
+    *,
+    *:before,
+    *:after {
+      box-sizing: border-box;
+    }
+
+    .step {
+
+      margin: 10px 20px;
+      position: relative;
+      min-height: 1em;
+      color: black;
+    }
+
+    .step+.step {
+      margin-top: 0em
+    }
+
+    .step>div:first-child {
+      position: static;
+      height: 0;
+    }
+
+    .step>div:not(:first-child) {
+      margin-left: 1.5em;
+      padding-left: 1em;
+    }
+
+    .step.step-active {
+      color: #4285f4
+    }
+
+    .step.step-active .circle {
+      background-color: #4285f4;
+
+    }
+
+    .circle {
+      background: black;
+      position: relative;
+      width: 1.5em;
+      height: 1.5em;
+      line-height: 1.5em;
+      border-radius: 100%;
+      color: black;
+      text-align: center;
+      box-shadow: 0 0 0 3px black;
+    }
+
+    .circle:after {
+      content: ' ';
+      position: absolute;
+      display: block;
+      top: 1px;
+      right: 50%;
+      bottom: 1px;
+      left: 50%;
+      height: 100%;
+      width: 1px;
+      transform: scale(1, 2);
+      transform-origin: 50% -100%;
+      background-color: black;
+      z-index: -1;
+    }
+
+    .step:last-child .circle:after {
+      display: none
+    }
+
+    .profile-userbuttons {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    /* Stepper Titles */
+    .title {
+      line-height: 1em;
+      font-weight: bold;
+    }
+
+    .caption {
+      font-size: 0.8em;
+    }
+  </style>
+  <script type="text/javascript">
+    function generateinvoice() {
+      var w = window.open("/invoice/{{status[0][0]}}");
+      w.print()
+    }
+  </script>
+</head>
+
+<body>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand " href="../"><b>MAX</b></a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+          <button class="btn navbar-btn btn-primary " data-toggle="modal"
+            data-target="#insuranceModal">INSURANCE</button>
+          <div class="modal fade" id="insuranceModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog " role="document">
+              <div class="modal-content">
+
+                <div class="modal-body">
+                  <form action="/insurance/{{vehicle[0][0]}}" method="POST">
+                    <div class="form-group">
+                      <label for="ins_no"><b>Insurance number</b></label>
+                      <input type="number" name="ins_no" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="validf"><b>Valid From</b></label>
+                      <input type="date" class="form-control" name="validf" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="validu"><b>Valid Upto</b></label>
+                      <input type="date" class="form-control" name="validu" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="cost"><b>Amount</b></label>
+                      <input type="number" class="form-control" name="cost" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="icomp"><b>Name of the Company</b></label>
+                      <input type="text" class="form-control" name="icomp" required>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <button class="btn navbar-btn btn-secondary" data-toggle="modal" data-target="#permitModal">PERMITS</button>
+          <div class="modal fade" id="permitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+            aria-hidden="true">
+            <div class="modal-dialog " role="document">
+              <div class="modal-content">
+
+                <div class="modal-body">
+                  <form action="/permit/{{vehicle[0][0]}}" method="POST">
+                    <div class="form-group">
+                      <label for="pno"><b>Permit Number</b></label>
+                      <input type="number" class="form-control" name="pno" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="validf"><b>Valid From</b></label>
+                      <input type="date" class="form-control" name="validf" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="validu"><b>Valid Upto</b></label>
+                      <input type="date" class="form-control" name="validu" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="cost"><b>Amount</b></label>
+                      <input type="number" class="form-control" name="cost" required>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+          <button class="btn navbar-btn btn-info" data-toggle="modal" data-target="#loanModal">LOANS</button>
+          <div class="modal fade" id="loanModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+            aria-hidden="true">
+            <div class="modal-dialog " role="document">
+              <div class="modal-content">
+
+                <div class="modal-body">
+                  <form action="/loan/{{vehicle[0][0]}}" method="POST">
+                    <div class="form-group">
+                      <label for="lno"><b>Loan Number</b></label>
+                      <input class="form-control" type="number" name="lno" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="costt"><b>Total Amount</b></label>
+                      <input type="number" class="form-control" name="costt" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="lcomp"><b>Loan company</b></label>
+                      <input type="text" class="form-control" name="lcomp" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="dur"><b>Duration</b></label>
+                      <input type="number" class="form-control" name="dur" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="intr"><b>Interest</b></label>
+                      <input type="number" class="form-control" name="intr" required>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+          <button class="btn navbar-btn btn-danger" data-toggle="modal" data-target="#taxModal">TAXES</button>
+          <div class="modal fade" id="taxModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+            aria-hidden="true">
+            <div class="modal-dialog " role="document">
+              <div class="modal-content">
+
+                <div class="modal-body">
+                  <form action="/tax/{{vehicle[0][0]}}" method="POST">
+                    <div class="form-group">
+                      <label for="tno"><b>Tax Number</b></label>
+                      <input type="number" class="form-control" name="tno" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="cost"><b>Amount</b></label>
+                      <input type="number" class="form-control" name="cost" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="validf"><b>Valid From</b></label>
+                      <input type="date" class="form-control" name="validf" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="validu"><b>Valid Upto</b></label>
+                      <input type="date" class="form-control" name="validu" required>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+          <button class="btn navbar-btn btn-warning" data-toggle="modal"
+            data-target="#maintenanceModal">MAINTENANCE</button>
+          <div class="modal fade" id="maintenanceModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog " role="document">
+              <div class="modal-content">
+
+                <div class="modal-body">
+                  <form action="/maintenance/{{vehicle[0][0]}}" method="POST">
+                    <div class="form-group">
+                      <label for="rmk"><b>Remark</b></label>
+                      <input type="text" class="form-control" name="rmk" required>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="plc"><b>Place</b></label>
+                      <input type="text" class="form-control" name="plc" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="cost"><b>Amount</b></label>
+                      <input type="number" class="form-control" name="cost" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="vend"><b>Vendor</b></label>
+                      <input type="text" class="form-control" name="vend" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="dom"><b>Date</b></label>
+                      <input type="date" class="form-control" name="dom" required>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+        </ul>
+
+      </div>
+    </div>
+    {%with messages=get_flashed_messages()%}
+    {%if messages%}
+    {%for message in messages%}
+    {%if message==None%}
+    <div class="alert alert-danger " role="alert">
+      <strong>Failed</strong>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {%else%}
+    <div class="alert alert-success " role="alert">
+      <strong>{{message[0]}}</strong>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {%endif%}
+
+    {%endfor%}
+    {% endif %}
+    {% endwith%}
+  </nav>
+  <div class="container">
+
+    <div class="col-sm-8">
+
+      <div class="row">
+        <div class="profile-sidebar">
+
+          <progress style="width: 100%" value={{loanStatus[0][0]}} max={{loanProgress[0][2]}}>
+          </progress>
+          <div class="profile-usertitle">
+
+
+            <div class="profile-usertitle-name">
+              Loan no : {{loanProgress[0][1]}}
+            </div>
+            <div class="profile-usertitle-name">
+              Total amount : {{loanProgress[0][2]}}
+            </div>
+            <div class="profile-usertitle-name">
+              Paid amount : {{loanStatus[0][0]}}
+            </div>
+            <div class="profile-usertitle-name">
+              Given by : {{loanProgress[0][3]}}
+            </div>
+            <form action="/pay_loan/{{loanProgress[0][0]}}/{{loanProgress[0][1]}}" method="POST">
+              <input type="number" placeholder="Enter amount" name="emi" required>
+              <button class="btn btn-success">Pay Loan EMI</button>
+
+            </form>
+          </div>
+
+
+        </div>
+      </div>
+
+      <div class="row">
+
+        {%for i in tripDetail%}
+        <div class="step step-active">
+          <div>
+            <div class="circle"><i class="fa fa-check"></i></div>
+          </div>
+          <div>
+            {%for x in i%}
+            <div class="title ">{{x}}</div>
+
+            {%endfor%}
+          </div>
+        </div>
+        {%endfor%}
+        <button style="margin-left:20px" class="btn btn-primary" data-toggle="modal" data-target="#addTransactionModal"
+          {%if status[0][8]=='1'%} !disabled {%else%} disabled {%endif%}>
+          Add Transaction</button>
+        <form style="margin-left:20px" method="POST" action="/stop_trip/{{vehicle[0][0]}}/{{status[0][0]}}"> <button
+            onclick="generateinvoice()" class="btn btn-danger" {%if status[0][8]=='1'%} !disabled {%else%} disabled
+            {%endif%}>
+            Stop Journey</button></form>
+
+      </div>
+
+    </div>
+    <div class="col-sm-4">
+      <div class="row">
+        <div class="profile-sidebar">
+          {%for i in vehicle%}
+
+          <div class="profile-usertitle">
+            <div class="profile-usertitle-name">
+              {{i[0]}}
+            </div>
+            <div class="profile-usertitle-job">
+              {{i[1]}}
+            </div>
+            <div class="profile-usertitle-job">
+              {{i[2]}}
+            </div>
+            <div class="profile-usertitle-job">
+              {{i[3]}}
+            </div>
+
+          </div>
+          {%endfor%}
+          <div class="profile-userbuttons">
+
+
+
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+              Delete Vehicle
+            </button>
+
+          </div>
+          <!-- Deleting Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog  " role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete ?</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+
+                <div class="modal-footer">
+                  <form action="/deleteVehicle/{{vehicle[0][0]}}" method="POST">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="profile-sidebar">
+          <form action="/start_trip/{{vehicle[0][0]}}" method="POST">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Enter Source" name="source" required>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Enter Destination" name="destination" required>
+            </div>
+            <div class="form-group">
+              <input type="number" class="form-control" placeholder="Enter cost" name="cost" required>
+            </div>
+            <div class="form-group">
+              <input type="number" class="form-control" placeholder="Enter weight" name="freight" required>
+            </div>
+            <div class="form-group">
+              <select class="custom-select form-control" name="customer_name">
+                <option selected>Choose customer</option>
+                {%for i in customers%}
+                <option value={{i[0]}}>{{i[1]}}</option>
+                {%endfor%}
+              </select>
+            </div>
+            <hr>
+            <button class="btn btn-success" {%if status[0][8]=='1'%} disabled {%else%} !disabled
+              {%endif%}type="submit">Start journey</button>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="modal fade" id="addTransactionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog " role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <form action="/add_trip_details/{{vehicle[0][0]}}/{{status[0][0]}}" method="POST">
+
+
+            <div class="form-group">
+              <label for="amt"><b>Transaction Amount</b></label>
+              <input type="number" class="form-control" name="amt" required>
+            </div>
+            <div class="form-group">
+              <label for="date_of_tran"><b>Transaction Date</b></label>
+              <input type="date" class="form-control" name="date_of_tran" required>
+            </div>
+            <div class="form-group">
+              <label for="place"><b>Place</b></label>
+              <input required type="text" class="form-control" name="place" required>
+            </div>
+            <div class="form-group">
+              <label for="reason"><b>Reason</b></label>
+              <input required type="text" class="form-control" name="reason" required>
+
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Add</button>
+
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- scripts -->
+  <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+    integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+    crossorigin="anonymous"></script>
+
+</body>
+
+</html>
