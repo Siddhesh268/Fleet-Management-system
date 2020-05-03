@@ -1,2 +1,2 @@
-# Fleet-Management-system
-Mini Project for CN, SDL , DBMS
+# FleetManagementSystem
+Mini Project for SDL CN DBMS
